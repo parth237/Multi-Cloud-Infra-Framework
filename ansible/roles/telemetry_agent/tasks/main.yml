@@ -1,0 +1,37 @@
+---
+# Automated Installation of Prometheus node_exporter
+
+- name: Download Prometheus node_exporter binary
+  get_url:
+    url: "https://github.com/prometheus/node_exporter/releases/download/v1.7.0/node_exporter-1.7.0.linux-amd64.tar.gz"
+    dest: "/tmp/node_exporter.tar.gz"
+    mode: '0644'
+
+- name: Extract node_exporter archive
+  unarchive:
+    src: "/tmp/node_exporter.tar.gz"
+    dest: "/opt/"
+    remote_src: yes
+
+- name: Create systemd service for node_exporter
+  copy:
+    dest: /etc/systemd/system/node_exporter.service
+    content: |
+      [Unit]
+      Description=Prometheus Node Exporter
+      After=network.target
+
+      [Service]
+      User=nobody
+      ExecStart=/opt/node_exporter-1.7.0.linux-amd64/node_exporter
+      Restart=always
+
+      [Install]
+      WantedBy=multi-user.target
+
+- name: Enable and start node_exporter service
+  systemd:
+    name: node_exporter
+    state: started
+    enabled: yes
+    daemon_reload: yes

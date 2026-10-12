@@ -1,0 +1,13 @@
+# Multi-Cloud Infrastructure Host Inventory
+
+[aws_nodes]
+aws-app-server-01 ansible_host=10.100.1.10 ansible_user=ubuntu
+aws-app-server-02 ansible_host=10.100.1.11 ansible_user=ubuntu
+
+[azure_nodes]
+azure-app-server-01 ansible_host=10.200.1.10 ansible_user=azureuser
+azure-app-server-02 ansible_host=10.200.1.11 ansible_user=azureuser
+
+[multicloud:children]
+aws_nodes
+azure_nodes

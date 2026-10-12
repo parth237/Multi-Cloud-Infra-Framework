@@ -1,0 +1,23 @@
+# Enterprise Multi-Cloud Remote State Backend Architecture
+# Demonstrates remote state storage and state locking to prevent configuration drift.
+
+# Option A: AWS S3 Backend with DynamoDB State Locking
+terraform {
+  backend "s3" {
+    bucket         = "multicloud-terraform-state-prod"
+    key            = "infrastructure/terraform.tfstate"
+    region         = "us-east-1"
+    dynamodb_table = "terraform-lock-table"
+    encrypt        = true
+  }
+}
+
+# Option B: Azure Blob Storage Backend with Native Blob Lease Locking
+# terraform {
+#   backend "azurerm" {
+#     resource_group_name  = "rg-terraform-state"
+#     storage_account_name = "tfstatestorageaccprod"
+#     container_name       = "tfstate"
+#     key                  = "infrastructure.tfstate"
+#   }
+# }

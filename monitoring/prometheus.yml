@@ -1,0 +1,25 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  # 1. Scrape Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # 2. Scrape AWS Infrastructure Nodes
+  - job_name: 'aws-infrastructure'
+    static_configs:
+      - targets: ['10.100.1.10:9100', '10.100.1.11:9100']
+        labels:
+          cloud_provider: 'AWS'
+          environment: 'production'
+
+  # 3. Scrape Azure Infrastructure Nodes
+  - job_name: 'azure-infrastructure'
+    static_configs:
+      - targets: ['10.200.1.10:9100', '10.200.1.11:9100']
+        labels:
+          cloud_provider: 'Azure'
+          environment: 'production'

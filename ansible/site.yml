@@ -1,0 +1,9 @@
+---
+- name: Multi-Cloud Infrastructure Baseline & Telemetry Configuration
+  hosts: multicloud
+  become: true
+  gather_facts: true
+
+  roles:
+    - role: os_hardening
+    - role: telemetry_agent

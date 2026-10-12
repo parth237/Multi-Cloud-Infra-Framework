@@ -1,0 +1,33 @@
+---
+# Security Baseline & OS Hardening Tasks
+
+- name: Update apt package cache and apply latest security patches
+  apt:
+    update_cache: yes
+    upgrade: dist
+  when: ansible_os_family == "Debian"
+
+- name: Ensure SSH root login is disabled for security compliance
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^PermitRootLogin'
+    line: 'PermitRootLogin no'
+    state: present
+  notify: Restart SSH
+
+- name: Enable local firewall (UFW) with least-privilege defaults
+  ufw:
+    state: enabled
+    default: deny
+
+- name: Allow inbound SSH traffic for administration
+  ufw:
+    rule: allow
+    port: '22'
+    proto: tcp
+
+- name: Allow inbound Prometheus telemetry scraping port
+  ufw:
+    rule: allow
+    port: '9100'
+    proto: tcp
