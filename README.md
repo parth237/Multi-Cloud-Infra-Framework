@@ -114,6 +114,8 @@ Multi-Cloud-Infra-Framework/
 │       ├── aws_network/               # Reusable AWS VPC & Security Group module
 │       └── azure_network/             # Reusable Azure VNet & NSG module
 ├── .gitignore
+├── app.py                         # Interactive Streamlit SRE & topology web dashboard
+├── requirements.txt               # Dashboard dependencies
 └── README.md
 ```
 
@@ -139,7 +141,14 @@ terraform validate
 python scripts/validate_health.py
 ```
 
-### 4. (Optional) Launch Local Grafana & Prometheus Stack
+### 4. Launch Interactive SRE Web Dashboard
+```bash
+pip install -r requirements.txt
+streamlit run app.py
+```
+*Access the live Multi-Cloud Topology, Grafana telemetry, and automated validation simulator at `http://localhost:8501`.*
+
+### 5. (Optional) Launch Local Grafana & Prometheus Stack
 ```bash
 cd monitoring
 docker-compose up -d
